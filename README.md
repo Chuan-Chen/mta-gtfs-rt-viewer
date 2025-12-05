@@ -57,13 +57,7 @@ This route is implemented at `app/api/gtfs/route/route.tsx`. The frontend expect
 - If styling appears missing, ensure PostCSS/Tailwind are installed and configured (see `postcss.config.mjs`).
 
 ## License
-Add a license file to the repository if needed.
+This project is licensed under the MIT License — see the `LICENSE` file for details.
 
----
-
-If you'd like, I can also:
-- add a small `curl` example to fetch the API
-- add `pnpm`/`yarn` instructions
-- update the README with environment variable guidance if the API needs credentials
 
 
