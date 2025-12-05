@@ -18,6 +18,17 @@ A small Next.js application for viewing MTA GTFS‑Realtime trip updates. The ap
 - Node.js (16+ recommended)
 - npm (or yarn/pnpm)
 
+## Environment Variables
+Create a `.env.local` file in the project root with:
+
+```env
+MTA_API_KEY=<your-mta-api-key>
+MTA_GTFS_RT_FEED=https://gtfsrt.prod.obanyc.com/tripUpdates
+```
+
+- `MTA_API_KEY` — your MTA API key for authentication
+- `MTA_GTFS_RT_FEED` — URL to the MTA GTFS-Realtime protobuf feed
+
 ## Install (PowerShell)
 Open a PowerShell terminal and run:
 
