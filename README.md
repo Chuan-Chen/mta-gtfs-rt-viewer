@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MTA GTFS‑RT Viewer
 
-## Getting Started
+A small Next.js application for viewing MTA GTFS‑Realtime trip updates. The app fetches GTFS‑RT trip updates via an internal API route and displays live trip, vehicle and stop information with search and a night mode.
 
-First, run the development server:
+## What it does
+- Fetches GTFS‑RT trip update entities and renders them in a responsive list
+- Expandable trip cards show stop sequences, arrival and departure times
+- Search by route, trip ID, vehicle ID or stop ID
+- Night mode toggle and last-fetched timestamp
 
-```bash
+## Key files
+- `app/page.tsx` — client page that fetches `/api/gtfs/route` and renders the UI
+- `app/components/Navbar.tsx` — search, night-mode toggle and last-fetched indicator
+- `app/api/gtfs/route/route.tsx` — server API route returning the GTFS‑RT feed
+- `app/globals.css` — global styles
+
+## Prerequisites
+- Node.js (16+ recommended)
+- npm (or yarn/pnpm)
+
+## Install (PowerShell)
+Open a PowerShell terminal and run:
+
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build & Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+npm run build
+npm start
+```
 
-## Learn More
+## API
+The client expects the GTFS feed data at:
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/gtfs/route`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This route is implemented at `app/api/gtfs/route/route.tsx`. The frontend expects the response JSON to include an `entity` array of GTFS trip-update entities.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Developer notes
+- The UI uses utility-style CSS classes (Tailwind-style). Ensure Tailwind or equivalent is configured if you copy styles.
+- `app/page.tsx` maps incoming feed entities into a `TripUpdate` shape and refreshes every 30 seconds.
+- Trip uniqueness in the UI is determined by the composite key: `` `${trip.tripId}-${trip.vehicleId}-${trip.timestamp}` ``.
 
-## Deploy on Vercel
+## Improvements / Next steps
+- Resolve `stopId` to human-readable stop names by adding a GTFS static `stops.txt` parser or lookup table.
+- Add per-route filtering, sorting by delay, and persistent user preferences (e.g., save night mode to `localStorage`).
+- Add tests for API route response parsing and UI components.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Troubleshooting
+- If the client shows "No trips found", check browser devtools network tab for `GET /api/gtfs/route` and inspect the returned JSON.
+- If styling appears missing, ensure PostCSS/Tailwind are installed and configured (see `postcss.config.mjs`).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+Add a license file to the repository if needed.
+
+---
+
+If you'd like, I can also:
+- add a small `curl` example to fetch the API
+- add `pnpm`/`yarn` instructions
+- update the README with environment variable guidance if the API needs credentials
+
+
